@@ -1,0 +1,182 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>iDeal-mollie gem by manuelvanrijn</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>iDeal-mollie gem</h1>
+        <p>A Ruby implementation for handling Mollie iDeal transactions</p>
+
+        <p class="view"><a href="https://github.com/manuelvanrijn/ideal-mollie">View the Project on GitHub <small>manuelvanrijn/ideal-mollie</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/manuelvanrijn/ideal-mollie/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/manuelvanrijn/ideal-mollie/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/manuelvanrijn/ideal-mollie">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>Ideal Mollie (ideal-mollie)</h1>
+
+<p><a href="http://travis-ci.org/manuelvanrijn/ideal-mollie"><img src="https://secure.travis-ci.org/manuelvanrijn/ideal-mollie.png?branch=master" alt="Build Status"></a> <a href="https://gemnasium.com/manuelvanrijn/ideal-mollie"><img src="https://gemnasium.com/manuelvanrijn/ideal-mollie.png" alt="Dependency Status"></a></p>
+
+<p>A simple Ruby implementation for handling iDeal transactions with the <a href="https://www.mollie.nl/support/documentatie/betaaldiensten/ideal/">Mollie API</a>.</p>
+
+<p>Here you can find the <a href="http://rubydoc.info/github/manuelvanrijn/ideal-mollie/master/frames">Documentation</a></p>
+
+<h2>Getting started</h2>
+
+<h3>Install</h3>
+
+<p>To install the gem you could execute</p>
+
+<pre><code>sudo gem install ideal-mollie
+</code></pre>
+
+<p>Or you could add the gem into your <code>Gemfile</code>.</p>
+
+<pre><code>gem 'ideal-mollie'
+</code></pre>
+
+<p>Finally, if you don’t dig any of that gemming that’s so popular nowadays, you can install it as a plugin;</p>
+
+<pre><code>cd vendor/plugins
+git clone --depth 1 git://github.com/manuelvanrijn/ideal-mollie.git ideal-mollie
+</code></pre>
+
+<h3>Configuration</h3>
+
+<p>Add the following config parameters to your environment config file</p>
+
+<pre><code>config.ideal_mollie.partner_id = 123456
+config.ideal_mollie.report_url = "http://example.org/report"
+config.ideal_mollie.return_url = "http://example.org/return"
+config.ideal_mollie.test_mode = false
+</code></pre>
+
+<p>Optionally you can add a profile_key if you have multiple profile's</p>
+
+<pre><code>config.ideal_mollie.profile_key = "123abc45"
+</code></pre>
+
+<h2>Rails Example</h2>
+
+<p>Below you will find a simple <code>TransactionController</code> and a view to display the bank selectbox. Note that this is just a very basic example.</p>
+
+<h3>Transaction Controller</h3>
+
+<div class="highlight">
+<pre><span class="k">class</span> <span class="nc">TransactionsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+  <span class="k">def</span> <span class="nf">index</span>
+    <span class="vi">@banks</span> <span class="o">=</span> <span class="no">IdealMollie</span><span class="o">.</span><span class="n">banks</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">start</span>
+    <span class="c1"># redirect to banks if there is no bank_id given</span>
+    <span class="n">redirect_to</span> <span class="n">transaction_path</span> <span class="k">if</span> <span class="n">params</span><span class="o">[</span><span class="ss">:bank_id</span><span class="o">].</span><span class="n">nil?</span>
+    <span class="n">bank_id</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:bank_id</span><span class="o">]</span>
+
+    <span class="c1"># 10,00 EUR</span>
+    <span class="n">request</span> <span class="o">=</span> <span class="no">IdealMollie</span><span class="o">.</span><span class="n">new_order</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="s1">'some payment description'</span><span class="p">,</span> <span class="n">bank_id</span><span class="p">)</span>
+
+    <span class="n">transaction_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">transaction_id</span>
+
+    <span class="c1"># TODO: store the transaction_id like:</span>
+    <span class="c1"># For example:</span>
+    <span class="c1">#   my_order = MyOrderObject.find(id)</span>
+    <span class="c1">#   my_order.transaction_id = transaction_id</span>
+    <span class="c1">#   my_order.save</span>
+
+    <span class="n">redirect_to</span> <span class="n">request</span><span class="o">.</span><span class="n">url</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">check</span>
+    <span class="n">transaction_id</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:transaction_id</span><span class="o">]</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="no">IdealMollie</span><span class="o">.</span><span class="n">check_order</span><span class="p">(</span><span class="n">transaction_id</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">paid</span>
+      <span class="c1"># TODO: store the result information for the paid payment</span>
+      <span class="c1"># For example:</span>
+      <span class="c1">#   my_order = MyOrder.find_by_transaction_id(transaction_id)</span>
+      <span class="c1">#   my_order.paid = true</span>
+      <span class="c1">#   my_order.paid_on = Time.now</span>
+      <span class="c1">#   my_order.customer_name = response.customer_name</span>
+      <span class="c1">#   my_order.customer_account = response.customer_account</span>
+      <span class="c1">#   my_order.customer_city = response.customer_city</span>
+      <span class="c1">#   my_order.save</span>
+    <span class="k">else</span>
+      <span class="c1"># TODO: store the result information for the canceled payment</span>
+      <span class="c1"># For example:</span>
+      <span class="c1">#   my_order = MyOrder.find_by_transaction_id(transaction_id)</span>
+      <span class="c1">#   my_order.paid = false</span>
+      <span class="c1">#   my_order.save</span>
+    <span class="k">end</span>
+    <span class="n">render</span> <span class="ss">:nothing</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">result</span>
+    <span class="n">transaction_id</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:transaction_id</span><span class="o">]</span>
+    <span class="c1"># TODO show the result</span>
+    <span class="c1"># For example:</span>
+    <span class="c1">#   my_order = MyOrder.find_by_transaction_id(transaction_id)</span>
+    <span class="c1">#   if my_order.paid</span>
+    <span class="c1">#     render :text =&gt; "Thank you for your payment."</span>
+    <span class="c1">#   else</span>
+    <span class="c1">#     render :text =&gt; "Transaction has been cancelled or couldn't complete"</span>
+    <span class="c1">#   end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<h3>View (transactions/index.html.erb)</h3>
+
+<div class="highlight">
+<pre><span class="cp">&lt;%=</span> <span class="n">form_tag</span> <span class="n">transaction_start_path</span><span class="p">,</span> <span class="ss">:method</span> <span class="o">=&gt;</span> <span class="ss">:post</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">select_tag</span> <span class="s2">"bank_id"</span><span class="p">,</span> <span class="n">options_from_collection_for_select</span><span class="p">(</span><span class="vi">@banks</span><span class="p">,</span> <span class="s2">"id"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">button_submit_tag</span> <span class="s2">"Checkout"</span> <span class="cp">%&gt;</span><span class="x"></span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+</pre>
+</div>
+
+
+<h2>Changelog</h2>
+
+<p>A detailed overview can be found in the <a href="https://github.com/manuelvanrijn/ideal-mollie/blob/master/CHANGELOG.md">CHANGELOG</a>.</p>
+
+<h2>Copyright</h2>
+
+<p>Copyright © 2012 Manuel van Rijn. See <a href="https://github.com/manuelvanrijn/ideal-mollie/blob/master/LICENSE.md">LICENSE</a> for further details.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/manuelvanrijn">manuelvanrijn</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-17149124-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
