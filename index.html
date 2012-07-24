@@ -48,6 +48,7 @@
               <li>
                 <a href="https://gemnasium.com/manuelvanrijn/ideal-mollie"><img src="https://gemnasium.com/manuelvanrijn/ideal-mollie.png" alt="Dependency Status" style="max-width:100%;"></a>
               </li>
+            </ul>
           </div><!--/.nav-collapse -->
         </div>
       </div>
@@ -141,7 +142,7 @@ config.ideal_mollie.profile_key = "123abc45"
           <div class="span7 panel">
             <h5 class="header">transaction_controller.rb</h5>
 <pre class="prettyprint linenums content">
-class TransactionsController < ApplicationController
+class TransactionsController &lt; ApplicationController
   def index
     @banks = IdealMollie.banks
   end
@@ -207,12 +208,12 @@ end
           <div class="span5 panel">
               <h5 class="header">transactions/index.html.erb</h5>
 <pre class="prettyprint content">
-<%= form_tag transaction_start_path, :method => :post do %>
-  <%= select_tag "bank_id", options_from_collection_for_select(
-                              @banks, "id", "name"
-                            ) %>
-  <%= button_submit_tag "Checkout" %>
-<% end %>
+&lt;%= form_tag transaction_start_path, :method =&gt; :post do %&gt;
+  &lt;%= select_tag &quot;bank_id&quot;, options_from_collection_for_select(
+                              @banks, &quot;id&quot;, &quot;name&quot;
+                            ) %&gt;
+  &lt;%= button_submit_tag &quot;Checkout&quot; %&gt;
+&lt;% end %&gt;
 </pre>
 
           </div>
