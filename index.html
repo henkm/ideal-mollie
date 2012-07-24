@@ -1,182 +1,255 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>iDeal-mollie gem by manuelvanrijn</title>
+    <title>ideal-mollie - Manuel van Rijn</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ideal-mollie gem project page">
+    <meta name="author" content="Manuel van Rijn">
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!-- Le styles -->
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Sans" />
+    <link rel="stylesheet" href="assets/style.css" />
+    <link rel="stylesheet" href="assets/google-code-prettify/prettify.css" />
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-responsive.min.css" />
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+      <script src="http://html5sim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
   </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1>iDeal-mollie gem</h1>
-        <p>A Ruby implementation for handling Mollie iDeal transactions</p>
 
-        <p class="view"><a href="https://github.com/manuelvanrijn/ideal-mollie">View the Project on GitHub <small>manuelvanrijn/ideal-mollie</small></a></p>
+  <body data-spy="scroll" data-target=".navbar" data-offset="50" id="home">
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">ideal-mollie</a>
+          <div class="nav-collapse">
+
+            <ul class="nav">
+              <li class="active"><a href="#home">Intro</a></li>
+              <li><a href="#install">Install</a></li>
+              <li><a href="#config">Config</a></li>
+              <li><a href="#rails">Rails example</a></li>
+              <li><a href="https://github.com/manuelvanrijn/ideal-mollie/blob/master/CHANGELOG.md">Changelog</a></li>
+            </ul>
+
+            <ul class="nav pull-right">
+              <li>
+                <a href="http://travis-ci.org/manuelvanrijn/ideal-mollie"><img src="https://secure.travis-ci.org/manuelvanrijn/ideal-mollie.png?branch=master" alt="Build Status" style="max-width:100%;"></a>
+              </li>
+              <li>
+                <a href="https://gemnasium.com/manuelvanrijn/ideal-mollie"><img src="https://gemnasium.com/manuelvanrijn/ideal-mollie.png" alt="Dependency Status" style="max-width:100%;"></a>
+              </li>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <!-- INTRO
+    ================================================== -->
+    <header>
+      <div class="container">
+        <h1>iDeal-Mollie</h1>
+        <p>A simple Ruby implementation for handling iDeal transactions with the Mollie API.</p>
+        <div>
+          <a class="btn btn-primary btn-large" href="https://github.com/manuelvanrijn/ideal-mollie"><i class="icon-eye-open icon-white"></i> View on GitHub</a>
+          <a class="btn btn-inverse btn-large" href="http://rubydoc.info/github/manuelvanrijn/ideal-mollie/master/frames"><i class="icon-book icon-white"></i> View documentation</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
 
 
-        <ul>
-          <li><a href="https://github.com/manuelvanrijn/ideal-mollie/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/manuelvanrijn/ideal-mollie/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/manuelvanrijn/ideal-mollie">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h1>Ideal Mollie (ideal-mollie)</h1>
+      <!-- INSTALL
+      ================================================== -->
+      <section id="install">
+        <div class="row">
+          <div class="span12 panel">
+            <h4 class="header">Installing the gem</h4>
+<pre class="prettyprint linenums content">
+# To install the gem you could execute
+sudo gem install ideal-mollie
 
-<p><a href="http://travis-ci.org/manuelvanrijn/ideal-mollie"><img src="https://secure.travis-ci.org/manuelvanrijn/ideal-mollie.png?branch=master" alt="Build Status"></a> <a href="https://gemnasium.com/manuelvanrijn/ideal-mollie"><img src="https://gemnasium.com/manuelvanrijn/ideal-mollie.png" alt="Dependency Status"></a></p>
+# Or you could add the gem into your Gemfile.
+gem 'ideal-mollie'
 
-<p>A simple Ruby implementation for handling iDeal transactions with the <a href="https://www.mollie.nl/support/documentatie/betaaldiensten/ideal/">Mollie API</a>.</p>
-
-<p>Here you can find the <a href="http://rubydoc.info/github/manuelvanrijn/ideal-mollie/master/frames">Documentation</a></p>
-
-<h2>Getting started</h2>
-
-<h3>Install</h3>
-
-<p>To install the gem you could execute</p>
-
-<pre><code>sudo gem install ideal-mollie
-</code></pre>
-
-<p>Or you could add the gem into your <code>Gemfile</code>.</p>
-
-<pre><code>gem 'ideal-mollie'
-</code></pre>
-
-<p>Finally, if you don’t dig any of that gemming that’s so popular nowadays, you can install it as a plugin;</p>
-
-<pre><code>cd vendor/plugins
+# Finally, if you don’t dig any of that gemming that’s so popular nowadays, you can install it as a plugin
+cd vendor/plugins
 git clone --depth 1 git://github.com/manuelvanrijn/ideal-mollie.git ideal-mollie
-</code></pre>
+</pre>
+          </div>
+        </div>
+      </section>
 
-<h3>Configuration</h3>
-
-<p>Add the following config parameters to your environment config file</p>
-
-<pre><code>config.ideal_mollie.partner_id = 123456
+      <!-- CONFIG
+      ================================================== -->
+      <section id="config">
+        <div class="page-header">
+          <h2>Configuration</h2>
+        </div>
+        <div class="row">
+          <div class="span6">
+            <p>Add the following config parameters to your environment config file</p>
+          </div>
+          <div class="span6 panel">
+            <h5 class="header">Configuration</h5>
+<pre class="prettyprint linenums content">
+config.ideal_mollie.partner_id = 123456
 config.ideal_mollie.report_url = "http://example.org/report"
 config.ideal_mollie.return_url = "http://example.org/return"
 config.ideal_mollie.test_mode = false
-</code></pre>
-
-<p>Optionally you can add a profile_key if you have multiple profile's</p>
-
-<pre><code>config.ideal_mollie.profile_key = "123abc45"
-</code></pre>
-
-<h2>Rails Example</h2>
-
-<p>Below you will find a simple <code>TransactionController</code> and a view to display the bank selectbox. Note that this is just a very basic example.</p>
-
-<h3>Transaction Controller</h3>
-
-<div class="highlight">
-<pre><span class="k">class</span> <span class="nc">TransactionsController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-  <span class="k">def</span> <span class="nf">index</span>
-    <span class="vi">@banks</span> <span class="o">=</span> <span class="no">IdealMollie</span><span class="o">.</span><span class="n">banks</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">start</span>
-    <span class="c1"># redirect to banks if there is no bank_id given</span>
-    <span class="n">redirect_to</span> <span class="n">transaction_path</span> <span class="k">if</span> <span class="n">params</span><span class="o">[</span><span class="ss">:bank_id</span><span class="o">].</span><span class="n">nil?</span>
-    <span class="n">bank_id</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:bank_id</span><span class="o">]</span>
-
-    <span class="c1"># 10,00 EUR</span>
-    <span class="n">request</span> <span class="o">=</span> <span class="no">IdealMollie</span><span class="o">.</span><span class="n">new_order</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="s1">'some payment description'</span><span class="p">,</span> <span class="n">bank_id</span><span class="p">)</span>
-
-    <span class="n">transaction_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">transaction_id</span>
-
-    <span class="c1"># TODO: store the transaction_id like:</span>
-    <span class="c1"># For example:</span>
-    <span class="c1">#   my_order = MyOrderObject.find(id)</span>
-    <span class="c1">#   my_order.transaction_id = transaction_id</span>
-    <span class="c1">#   my_order.save</span>
-
-    <span class="n">redirect_to</span> <span class="n">request</span><span class="o">.</span><span class="n">url</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">check</span>
-    <span class="n">transaction_id</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:transaction_id</span><span class="o">]</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="no">IdealMollie</span><span class="o">.</span><span class="n">check_order</span><span class="p">(</span><span class="n">transaction_id</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">paid</span>
-      <span class="c1"># TODO: store the result information for the paid payment</span>
-      <span class="c1"># For example:</span>
-      <span class="c1">#   my_order = MyOrder.find_by_transaction_id(transaction_id)</span>
-      <span class="c1">#   my_order.paid = true</span>
-      <span class="c1">#   my_order.paid_on = Time.now</span>
-      <span class="c1">#   my_order.customer_name = response.customer_name</span>
-      <span class="c1">#   my_order.customer_account = response.customer_account</span>
-      <span class="c1">#   my_order.customer_city = response.customer_city</span>
-      <span class="c1">#   my_order.save</span>
-    <span class="k">else</span>
-      <span class="c1"># TODO: store the result information for the canceled payment</span>
-      <span class="c1"># For example:</span>
-      <span class="c1">#   my_order = MyOrder.find_by_transaction_id(transaction_id)</span>
-      <span class="c1">#   my_order.paid = false</span>
-      <span class="c1">#   my_order.save</span>
-    <span class="k">end</span>
-    <span class="n">render</span> <span class="ss">:nothing</span> <span class="o">=&gt;</span> <span class="kp">true</span>
-  <span class="k">end</span>
-
-  <span class="k">def</span> <span class="nf">result</span>
-    <span class="n">transaction_id</span> <span class="o">=</span> <span class="n">params</span><span class="o">[</span><span class="ss">:transaction_id</span><span class="o">]</span>
-    <span class="c1"># TODO show the result</span>
-    <span class="c1"># For example:</span>
-    <span class="c1">#   my_order = MyOrder.find_by_transaction_id(transaction_id)</span>
-    <span class="c1">#   if my_order.paid</span>
-    <span class="c1">#     render :text =&gt; "Thank you for your payment."</span>
-    <span class="c1">#   else</span>
-    <span class="c1">#     render :text =&gt; "Transaction has been cancelled or couldn't complete"</span>
-    <span class="c1">#   end</span>
-  <span class="k">end</span>
-<span class="k">end</span>
 </pre>
-</div>
-
-
-<h3>View (transactions/index.html.erb)</h3>
-
-<div class="highlight">
-<pre><span class="cp">&lt;%=</span> <span class="n">form_tag</span> <span class="n">transaction_start_path</span><span class="p">,</span> <span class="ss">:method</span> <span class="o">=&gt;</span> <span class="ss">:post</span> <span class="k">do</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">select_tag</span> <span class="s2">"bank_id"</span><span class="p">,</span> <span class="n">options_from_collection_for_select</span><span class="p">(</span><span class="vi">@banks</span><span class="p">,</span> <span class="s2">"id"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">)</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="x">  </span><span class="cp">&lt;%=</span> <span class="n">button_submit_tag</span> <span class="s2">"Checkout"</span> <span class="cp">%&gt;</span><span class="x"></span>
-<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span><span class="x"></span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="span6">
+            <p>Optionally you can add a <strong>profile_key</strong> if you have multiple profile's</p>
+          </div>
+          <div class="span6 panel">
+            <h5 class="header">Configuration</h5>
+<pre class="prettyprint linenums content">
+config.ideal_mollie.profile_key = "123abc45"
 </pre>
-</div>
+          </div>
+        </div>
 
-
-<h2>Changelog</h2>
-
-<p>A detailed overview can be found in the <a href="https://github.com/manuelvanrijn/ideal-mollie/blob/master/CHANGELOG.md">CHANGELOG</a>.</p>
-
-<h2>Copyright</h2>
-
-<p>Copyright © 2012 Manuel van Rijn. See <a href="https://github.com/manuelvanrijn/ideal-mollie/blob/master/LICENSE.md">LICENSE</a> for further details.</p>
       </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/manuelvanrijn">manuelvanrijn</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
-    </div>
-    <script src="javascripts/scale.fix.js"></script>
-              <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-17149124-1");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
 
+      <!-- RAILS EXAMPLE
+      ================================================== -->
+      <section id="rails">
+        <div class="page-header">
+          <h2>Ruby on Rails example
+            <small>Controller and view code</small>
+          </h2>
+        </div>
+        <div class="row">
+          <div class="span12">
+            <p>Below you will find a simple <code>TransactionController</code> and a view to display the bank selectbox. Note that this is just a very basic example.</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="span7 panel">
+            <h5 class="header">transaction_controller.rb</h5>
+<pre class="prettyprint linenums content">
+class TransactionsController < ApplicationController
+  def index
+    @banks = IdealMollie.banks
+  end
+
+  def start
+    # redirect to banks if there is no bank_id given
+    redirect_to transaction_path if params[:bank_id].nil?
+    bank_id = params[:bank_id]
+
+    # 10,00 EUR
+    request = IdealMollie.new_order(1000, 'some payment description', bank_id)
+
+    transaction_id = request.transaction_id
+
+    # TODO: store the transaction_id like:
+    # For example:
+    #   my_order = MyOrderObject.find(id)
+    #   my_order.transaction_id = transaction_id
+    #   my_order.save
+
+    redirect_to request.url
+  end
+
+  def check
+    transaction_id = params[:transaction_id]
+    response = IdealMollie.check_order(transaction_id)
+
+    if response.paid
+      # TODO: store the result information for the paid payment
+      # For example:
+      #   my_order = MyOrder.find_by_transaction_id(transaction_id)
+      #   my_order.paid = true
+      #   my_order.paid_on = Time.now
+      #   my_order.customer_name = response.customer_name
+      #   my_order.customer_account = response.customer_account
+      #   my_order.customer_city = response.customer_city
+      #   my_order.save
+    else
+      # TODO: store the result information for the canceled payment
+      # For example:
+      #   my_order = MyOrder.find_by_transaction_id(transaction_id)
+      #   my_order.paid = false
+      #   my_order.save
+    end
+    render :nothing => true
+  end
+
+  def result
+    transaction_id = params[:transaction_id]
+    # TODO show the result
+    # For example:
+    #   my_order = MyOrder.find_by_transaction_id(transaction_id)
+    #   if my_order.paid
+    #    render :text => "Thank you for your payment."
+    #   else
+    #    render :text => "Transaction has been cancelled or couldn't complete"
+    #   end
+  end
+end
+</pre>
+
+          </div>
+          <div class="span5 panel">
+              <h5 class="header">transactions/index.html.erb</h5>
+<pre class="prettyprint content">
+<%= form_tag transaction_start_path, :method => :post do %>
+  <%= select_tag "bank_id", options_from_collection_for_select(
+                              @banks, "id", "name"
+                            ) %>
+  <%= button_submit_tag "Checkout" %>
+<% end %>
+</pre>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER
+      ================================================== -->
+      <footer class="footer">
+        <p class="pull-right"><a href="#home">Back to top</a></p>
+        <p>
+          <a href="https://github.com/manuelvanrijn/ideal-mollie">ideal-mollie</a> is built and maintained by <a href="http://manuel.manuelles.nl/">Manuel van Rijn</a>.
+          Follow me on <a href="http://twitter.com/manuelvanrijn/">Twitter</a>, <a href="https://github.com/manuelvanrijn/">GitHub</a> and <a rel="me" href="https://plus.google.com/u/0/117895812778172164201?rel=author">Google+</a>.</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="assets/google-code-prettify/prettify.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.js"></script>
+    <script>$(function () { prettyPrint() })</script>
+
+    <script type="text/javascript">
+
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-17149124-1']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+
+    </script>
   </body>
 </html>
