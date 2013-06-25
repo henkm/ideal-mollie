@@ -153,7 +153,19 @@ class TransactionsController &lt; ApplicationController
     bank_id = params[:bank_id]
 
     # 10,00 EUR
-    request = IdealMollie.new_order(1000, 'some payment description', bank_id)
+    request = IdealMollie.new_order(
+      amount: 1000,
+      description: 'some payment description',
+      bank_id: bank_id
+    )
+    # Optionally you could override the report_url and return_url here, by doing:
+    # request = IdealMollie.new_order(
+    #   amount: 1000,
+    #   description: 'some payment description',
+    #   bank_id: bank_id,
+    #   report_url: "http://url.org/report",
+    #   return_url: "http://url.org/return"
+    # )
 
     transaction_id = request.transaction_id
 
@@ -196,9 +208,9 @@ class TransactionsController &lt; ApplicationController
     # For example:
     #   my_order = MyOrder.find_by_transaction_id(transaction_id)
     #   if my_order.paid
-    #    render :text => "Thank you for your payment."
+    #     render :text => "Thank you for your payment."
     #   else
-    #    render :text => "Transaction has been cancelled or couldn't complete"
+    #     render :text => "Transaction has been cancelled or couldn't complete"
     #   end
   end
 end
