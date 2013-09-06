@@ -4,17 +4,17 @@ require "faraday_middleware"
 require "multi_xml"
 
 # Files
-require "ideal-mollie/bank"
-require "ideal-mollie/config"
-require "ideal-mollie/engine" if defined?(Rails) && Rails::VERSION::MAJOR.to_i >= 3
-require "ideal-mollie/ideal_exception"
-require "ideal-mollie/order"
-require "ideal-mollie/order_result"
+require "mollie/bank"
+require "mollie/config"
+require "mollie/engine" if defined?(Rails) && Rails::VERSION::MAJOR.to_i >= 3
+require "mollie/ideal_exception"
+require "mollie/order"
+require "mollie/order_result"
 
 #
-# IdealMollie Module
+# Mollie Module
 #
-module IdealMollie
+module Mollie
   # Mollie API url
   MOLLIE_URL = "https://secure.mollie.nl/xml/ideal"
 
@@ -24,16 +24,16 @@ module IdealMollie
   # @visibility public
   #
   # @example
-  #   IdealMollie.banks
+  #   Mollie.banks
   #
-  # @return [Array<IdealMollie::Bank>] list of supported +Bank+'s.
+  # @return [Array<Mollie::Bank>] list of supported +Bank+'s.
   def self.banks
-    response = IdealMollie.request("banklist")
+    response = Mollie.request("banklist")
 
     banks = response["bank"]
     banks = [banks] unless banks.is_a?Array # to array if it isn't already
 
-    banks.inject([]) { |result, bank| result << IdealMollie::Bank.new(bank); result }
+    banks.inject([]) { |result, bank| result << Mollie::Bank.new(bank); result }
   end
 
   #
@@ -48,8 +48,8 @@ module IdealMollie
   #
   # @example
   #   # as a Hash
-  #   IdealMollie.new_order(amount: 1000, description: "Ordernumber #123: new gadget", bank_id: "0031")
-  #   IdealMollie.new_order(
+  #   Mollie.new_order(amount: 1000, description: "Ordernumber #123: new gadget", bank_id: "0031")
+  #   Mollie.new_order(
   #     amount: 1000,
   #     description: "Ordernumber #123: new gadget",
   #     bank_id: "0031",
@@ -58,11 +58,11 @@ module IdealMollie
   #   )
   #
   #   # as arguments
-  #   IdealMollie.new_order(1000, "Ordernumber #123: new gadget", "0031")
-  #   IdealMollie.new_order(1000, "Ordernumber #123: new gadget", "0031", "http://override.url/controller/return_action")
-  #   IdealMollie.new_order(1000, "Ordernumber #123: new gadget", "0031", "http://override.url/controller/return_action", "http://override.url/controller/report_action")
+  #   Mollie.new_order(1000, "Ordernumber #123: new gadget", "0031")
+  #   Mollie.new_order(1000, "Ordernumber #123: new gadget", "0031", "http://override.url/controller/return_action")
+  #   Mollie.new_order(1000, "Ordernumber #123: new gadget", "0031", "http://override.url/controller/return_action", "http://override.url/controller/report_action")
   #
-  # @return [IdealMollie::Order] the +Order+.
+  # @return [Mollie::Order] the +Order+.
   def self.new_order(hash_or_amount, description=nil, bank_id=nil, return_url=nil, report_url=nil)
     amount = hash_or_amount
     if hash_or_amount.is_a?(Hash)
@@ -73,9 +73,9 @@ module IdealMollie
       report_url = hash_or_amount[:report_url] if hash_or_amount.has_key?(:report_url)
     end
     params = new_order_params(amount, description, bank_id, return_url, report_url)
-    response = IdealMollie.request("fetch", params)
+    response = Mollie.request("fetch", params)
 
-    IdealMollie::Order.new(response["order"])
+    Mollie::Order.new(response["order"])
   end
 
   #
@@ -86,19 +86,19 @@ module IdealMollie
   # @param [String] transaction_id the transaction to verify.
   #
   # @example
-  #   IdealMollie.check_order("4b99662febb42ce6f889d9c57f5cf3fa")
+  #   Mollie.check_order("4b99662febb42ce6f889d9c57f5cf3fa")
   #
   # @note Once a transaction is paid, only the next time you verify the
   #   transaction will the value of +paid+ be +true+.
   #   Else it will be +false+.
   #
-  # @return [IdealMollie::OrderResult] the +OrderResult+.
+  # @return [Mollie::OrderResult] the +OrderResult+.
   def self.check_order(transaction_id)
-    response = IdealMollie.request("check", {
+    response = Mollie.request("check", {
       :partnerid => Config.partner_id,
       :transaction_id => transaction_id
     })
-    IdealMollie::OrderResult.new(response["order"])
+    Mollie::OrderResult.new(response["order"])
   end
 
   class << self
@@ -111,7 +111,7 @@ module IdealMollie
     # @param [String] action The action to perform.
     # @param [Hash] params Additional parameters to send like partner_id
     #
-    # @raise [IdealMollie::IdealException] When a error is returned by Mollie
+    # @raise [Mollie::IdealException] When a error is returned by Mollie
     #
     # @return [Hash] the returned XML as a +Hash+
     def request(action, params={})
@@ -124,7 +124,7 @@ module IdealMollie
 
       if response.has_key?("item")
         error = response["item"]
-        raise IdealMollie::IdealException.new(error["errorcode"], error["message"], error["type"])
+        raise Mollie::IdealException.new(error["errorcode"], error["message"], error["type"])
       end
       response
     end
@@ -162,8 +162,8 @@ module IdealMollie
     private
 
     def connection
-      @connection ||= Faraday::Connection.new(:url => IdealMollie::MOLLIE_URL,
-                                  :headers => {:user_agent => "Ruby-IdealMollie"},
+      @connection ||= Faraday::Connection.new(:url => Mollie::MOLLIE_URL,
+                                  :headers => {:user_agent => "Ruby-Mollie"},
                                   :ssl => {:verify => false}) do |builder|
         builder.adapter Faraday.default_adapter
         builder.use FaradayMiddleware::ParseXml

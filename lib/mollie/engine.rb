@@ -1,4 +1,4 @@
-module IdealMollie
+module Mollie
   #
   # Simpel extend on the +Rails::Engine+ to add support for a new config section within
   # the environment configs
@@ -19,6 +19,6 @@ module IdealMollie
   #   config.ideal_mollie.profile_key = "123abc45"
   #
   class Engine < Rails::Engine
-    config.ideal_mollie = IdealMollie::Config
+    config.ideal_mollie = Mollie::Config
   end
 end

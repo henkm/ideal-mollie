@@ -1,4 +1,4 @@
-module IdealMollie
+module Mollie
   #
   # Object representing a "Order" object with attributes provided by Mollie
   #

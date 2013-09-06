@@ -1,4 +1,4 @@
-module IdealMollie
+module Mollie
   #
   # Object representing a "Bank" object with attributes provided by Mollie
   #

@@ -8,7 +8,7 @@ http_interactions:
       string: ''
     headers:
       user-agent:
-      - Ruby-IdealMollie
+      - Ruby-Mollie
       content-length:
       - '0'
       accept:

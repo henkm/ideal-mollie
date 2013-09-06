@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe IdealMollie do
+describe Mollie do
   before(:each) do
-    @config = IdealMollie::Config
+    @config = Mollie::Config
     @config.reset!
     @config.test_mode = false
     @config.partner_id = 987654
@@ -13,7 +13,7 @@ describe IdealMollie do
   context "#banks" do
     it "returns an array with banks" do
       VCR.use_cassette("banks", :match_requests_on => [:ignore_query_param_ordering]) do
-        banks = IdealMollie.banks
+        banks = Mollie.banks
         banks.is_a?(Array).should be_true
         banks.count > 0
 
@@ -27,7 +27,7 @@ describe IdealMollie do
   context "#new_order" do
     it "should return a Order with the correct values" do
       VCR.use_cassette("new_order", :match_requests_on => [:ignore_query_param_ordering]) do
-        order = IdealMollie.new_order(1000, "test", "0031")
+        order = Mollie.new_order(1000, "test", "0031")
         order.transaction_id.should eq "c9f93e5c2bd6c1e7c5bee5c5580c6f83"
         order.amount.should eq 1000
         order.currency.should eq "EUR"
@@ -39,7 +39,7 @@ describe IdealMollie do
       @config.profile_key = "123abc45"
       @config.update!
       VCR.use_cassette("new_order", :match_requests_on => [:ignore_query_param_ordering]) do
-        order = IdealMollie.new_order(1000, "test", "0031")
+        order = Mollie.new_order(1000, "test", "0031")
         order.transaction_id.should eq "474ed7b2735cbe4d1f4fd4da23269263"
         order.amount.should eq 1000
         order.currency.should eq "EUR"
@@ -48,33 +48,33 @@ describe IdealMollie do
       end
     end
     it "should override the return url when specified" do
-      params = IdealMollie.new_order_params(1200, "test", "0031")
+      params = Mollie.new_order_params(1200, "test", "0031")
       params[:returnurl].should eq "http://example.org/return"
 
-      params = IdealMollie.new_order_params(1200, "test", "0031", "http://another.example.org/return")
+      params = Mollie.new_order_params(1200, "test", "0031", "http://another.example.org/return")
       params[:returnurl].should eq "http://another.example.org/return"
     end
     it "should not append the profile_key this isn't specified in the config" do
-      params = IdealMollie.new_order_params(1200, "test", "0031")
+      params = Mollie.new_order_params(1200, "test", "0031")
       params.has_key?(:profile_key).should be_false
     end
     it "should append the profile_key if specified in the config" do
       @config.profile_key = 12345
       @config.update!
 
-      params = IdealMollie.new_order_params(1200, "test", "0031")
+      params = Mollie.new_order_params(1200, "test", "0031")
       params.has_key?(:profile_key).should be_true
     end
     it "should override the report url when specified" do
-      params = IdealMollie.new_order_params(1200, "test", "0031")
+      params = Mollie.new_order_params(1200, "test", "0031")
       params[:reporturl].should eq "http://example.org/report"
 
-      params = IdealMollie.new_order_params(1200, "test", "0031", nil, "http://another.example.org/report")
+      params = Mollie.new_order_params(1200, "test", "0031", nil, "http://another.example.org/report")
       params[:reporturl].should eq "http://another.example.org/report"
     end
     it "should accept hash as arguments for new_order" do
       VCR.use_cassette("new_order", :match_requests_on => [:ignore_query_param_ordering]) do
-        order = IdealMollie.new_order(amount: 1000, description: "test", bank_id: "0031")
+        order = Mollie.new_order(amount: 1000, description: "test", bank_id: "0031")
         order.amount.should eq 1000
       end
     end
@@ -93,9 +93,9 @@ describe IdealMollie do
         result = {}
         result["order"] = nil
 
-        IdealMollie.should_receive(:request).with("fetch", params).and_return(result)
+        Mollie.should_receive(:request).with("fetch", params).and_return(result)
 
-        order = IdealMollie.new_order(
+        order = Mollie.new_order(
           amount: 1000,
           description: "test",
           bank_id: "0031",
@@ -117,9 +117,9 @@ describe IdealMollie do
         result = {}
         result["order"] = nil
 
-        IdealMollie.should_receive(:request).with("fetch", params).and_return(result)
+        Mollie.should_receive(:request).with("fetch", params).and_return(result)
 
-        order = IdealMollie.new_order(
+        order = Mollie.new_order(
           amount: 1000,
           description: "test",
           bank_id: "0031",
@@ -131,7 +131,7 @@ describe IdealMollie do
   context "#check_order" do
     it "should return a OrderResult with the correct values" do
       VCR.use_cassette("check_order", :match_requests_on => [:ignore_query_param_ordering]) do
-        order_result = IdealMollie.check_order("c9f93e5c2bd6c1e7c5bee5c5580c6f83")
+        order_result = Mollie.check_order("c9f93e5c2bd6c1e7c5bee5c5580c6f83")
         order_result.transaction_id.should eq "c9f93e5c2bd6c1e7c5bee5c5580c6f83"
         order_result.amount.should eq 1000
         order_result.currency.should eq "EUR"
@@ -143,7 +143,7 @@ describe IdealMollie do
 
     it "should mark the OrderResult as paid and contain the customer information when called by mollie" do
       VCR.use_cassette("check_order", :match_requests_on => [:ignore_query_param_ordering]) do
-        order_result = IdealMollie.check_order("482d599bbcc7795727650330ad65fe9b")
+        order_result = Mollie.check_order("482d599bbcc7795727650330ad65fe9b")
         order_result.transaction_id.should eq "482d599bbcc7795727650330ad65fe9b"
         order_result.amount.should eq 1000
         order_result.currency.should eq "EUR"

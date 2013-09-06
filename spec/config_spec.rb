@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe IdealMollie::Config do
+describe Mollie::Config do
   before(:each) do
-    @config = IdealMollie::Config
+    @config = Mollie::Config
     @config.test_mode = true
     @config.partner_id = 123456
     @config.profile_key = "321zyx12"
@@ -31,7 +31,7 @@ describe IdealMollie::Config do
       @config.return_url = "return"
       @config.update!
 
-      config = IdealMollie::Config
+      config = Mollie::Config
       config.test_mode.should be_false
       config.partner_id.should eq 987654
       config.profile_key.should eq "123abc45"

@@ -1,17 +1,17 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "ideal-mollie/version"
+require "mollie/version"
 
 Gem::Specification.new do |s|
-  s.name        = "ideal-mollie"
-  s.version     = IdealMollie::VERSION
-  s.authors     = ["Manuel van Rijn"]
-  s.email       = ["manuel@manuelles.nl"]
-  s.homepage    = "https://github.com/manuelvanrijn/ideal-mollie"
-  s.summary     = %q{Make iDeal Mollie payments without the pain}
-  s.description = %q{A simple Ruby implementation for handeling iDeal transactions with the Mollie API}
+  s.name        = "mollie"
+  s.version     = Mollie::VERSION
+  s.authors     = ["Henk Meijer"]
+  s.email       = ["meijerhenk@gmail.com"]
+  s.homepage    = "https://github.com/hemnkm/mollie"
+  s.summary     = %q{Make iDeal and Credit Card Mollie payments without the pain}
+  s.description = %q{A simple Ruby implementation for handeling iDeal transactions and Credit Card transactions with the Mollie API}
 
-  s.rubyforge_project = "ideal-mollie"
+  # s.rubyforge_project = "mollie"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

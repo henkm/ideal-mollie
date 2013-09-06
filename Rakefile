@@ -4,5 +4,5 @@ RSpec::Core::RakeTask.new("spec")
 
 require "yard"
 YARD::Rake::YardocTask.new do |t|
-  t.options += ["--title", "Ideal-Mollie #{IdealMollie::VERSION} Documentation"]
+  t.options += ["--title", "Ideal-Mollie #{Mollie::VERSION} Documentation"]
 end

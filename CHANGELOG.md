@@ -7,7 +7,7 @@
 
 - **25 June 2013**: version 1.0.3
     - Make Nokogiri version less restrictive by [@tijmenb](https://github.com/tijmenb)
-    - Added different argument passing for `IdealMollie.new_order`
+    - Added different argument passing for `Mollie.new_order`
 
 - **11 Februari 2012**: version 1.0.2
     - Fix for verify sha512

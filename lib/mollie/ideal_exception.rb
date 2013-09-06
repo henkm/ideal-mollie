@@ -1,6 +1,6 @@
-module IdealMollie
+module Mollie
   #
-  # Exception class specific for the IdealMollie error that might occur
+  # Exception class specific for the Mollie error that might occur
   #
   class IdealException < Exception
     # @return [String] The errorcode

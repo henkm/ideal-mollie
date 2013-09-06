@@ -1,7 +1,7 @@
 #
 # Configuration object for storing some parameters required for making transactions
 #
-module IdealMollie::Config
+module Mollie::Config
   class << self
     # @return [int] Your Mollie partner id.
     # @note See: https://www.mollie.nl/beheer/betaaldiensten/documentatie/ideal/ for your partner id
